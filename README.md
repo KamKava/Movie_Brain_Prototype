@@ -4,6 +4,19 @@ A personal movie library and random movie picker built with **Python and Flask**
 
 Movie Brain lets me manage my movie collection, search and filter it, and randomly select something to watch.
 
+
+```text
+# Movie Brain
+
+A personal movie library and random movie picker built with Python and Flask.
+
+![Movie Brain main interface](docs/images/picture_1.png)
+
+![Random movie choice](docs/images/picture_2.png)
+
+Movie Brain lets me manage my movie collection and optimizes my choice process.
+
+
 ## Features
 
 * Add, edit and delete movies
@@ -50,7 +63,7 @@ Run the application:
 python app.py
 ```
 
-The application will be available at:
+The application will be available in your browser at:
 
 ```text
 http://127.0.0.1:5000
