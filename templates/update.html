@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
+
+<title>Update Movie</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="section">
+
+<h1>✏️ Update Movie</h1>
+
+<form method="post">
+
+<label>Title</label>
+
+<input
+    type="text"
+    name="title"
+    value="{{ movie.title }}"
+    required
+>
+
+
+<label>Series</label>
+
+<input
+    type="text"
+    name="series"
+    value="{{ movie.series }}"
+>
+
+
+<label>Series order</label>
+
+<input
+    type="number"
+    step="1"
+    name="series_order"
+    value="{{ movie.series_order if movie.series_order == movie.series_order else '' }}"
+>
+
+
+<label>Genre</label>
+
+<input
+    type="text"
+    name="genre"
+    value="{{ movie.genre }}"
+>
+
+
+<label>Year</label>
+
+<input
+    type="number"
+    name="year"
+    value="{{ movie.year if movie.year == movie.year else '' }}"
+>
+
+
+<label>Runtime (minutes)</label>
+
+<input
+    type="number"
+    name="runtime"
+    value="{{ movie.runtime if movie.runtime == movie.runtime else '' }}"
+>
+
+
+<label>Mood</label>
+
+<input
+    type="text"
+    name="mood"
+    value="{{ movie.mood }}"
+>
+
+
+<label>Own it</label>
+
+<select name="own_it">
+
+<option value="no"
+{% if movie.own_it == "no" %}
+selected
+{% endif %}
+>
+No
+</option>
+
+<option value="yes"
+{% if movie.own_it == "yes" %}
+selected
+{% endif %}
+>
+Yes
+</option>
+
+</select>
+
+
+<label>Watched</label>
+
+<select name="watched">
+
+<option value="no"
+{% if movie.watched == "no" %}
+selected
+{% endif %}
+>
+No
+</option>
+
+<option value="yes"
+{% if movie.watched == "yes" %}
+selected
+{% endif %}
+>
+Yes
+</option>
+
+</select>
+
+
+<label>So bad it's good</label>
+
+<select name="so_bad_its_good">
+
+<option value="no"
+{% if movie.so_bad_its_good == "no" %}
+selected
+{% endif %}
+>
+No
+</option>
+
+<option value="yes"
+{% if movie.so_bad_its_good == "yes" %}
+selected
+{% endif %}
+>
+Yes
+</option>
+
+</select>
+
+
+<button type="submit">
+
+💾 SAVE CHANGES
+
+</button>
+
+</form>
+
+
+<form action="/" method="get">
+
+<button
+    type="submit"
+    class="back"
+>
+
+← BACK TO MOVIE BRAIN
+
+</button>
+
+</form>
+
+<form
+    method="post"
+    action="/delete_movie/{{ movie.movie_id }}"
+    onsubmit="return confirm('Are you sure you want to permanently delete {{ movie.title }}?');"
+>
+
+<button
+    type="submit"
+    class="delete-button"
+>
+
+🗑️ DELETE MOVIE
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>

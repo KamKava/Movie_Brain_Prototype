@@ -1,0 +1,156 @@
+body {
+    font-family: Arial, sans-serif;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 15px;
+    background: #181818;
+    color: #eeeeee;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.collection-count {
+    text-align: center;
+    color: #aaaaaa;
+    margin-bottom: 20px;
+}
+
+.section {
+    background: #242424;
+    padding: 18px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+}
+
+label {
+    display: block;
+    margin-top: 14px;
+    font-weight: bold;
+    color: #dddddd;
+}
+
+label:first-child {
+    margin-top: 0;
+}
+
+input,
+select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px;
+    margin-top: 5px;
+    font-size: 16px;
+    border: 1px solid #555555;
+    border-radius: 8px;
+    background: #333333;
+    color: #ffffff;
+}
+
+input::placeholder {
+    color: #999999;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 12px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background: #555555;
+    color: white;
+}
+
+button:active {
+    opacity: 0.7;
+}
+
+.watch-button {
+    background: #286b35;
+}
+
+.secondary-button {
+    background: #444444;
+}
+
+summary {
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+    color: #ffffff;
+}
+
+.movie {
+    background: #303030;
+    padding: 13px;
+    margin-top: 10px;
+    border-radius: 9px;
+    border: 1px solid #444444;
+}
+
+.movie-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.movie-info {
+    line-height: 1.5;
+    color: #cccccc;
+}
+
+.winner {
+    background: #2d2d2d;
+    padding: 25px 15px;
+    margin-top: 20px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid #555555;
+}
+
+.winner-label {
+    font-size: 15px;
+    color: #aaaaaa;
+}
+
+.winner-title {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #ffffff;
+}
+
+.winner-info {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #dddddd;
+}
+
+.warning {
+    text-align: center;
+    background: #4a3d16;
+    color: #fff3cd;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.message {
+    background: #28452c;
+    color: #d8f3dc;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+a {
+    color: inherit;
+}

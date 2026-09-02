@@ -1,0 +1,8 @@
+movie_id,title,series,series_order,director,genre,year,own_it,runtime,mood,watched,so_bad_its_good
+1,The bridge,,,,Documentary,2026,yes,95,Grim,yes,no
+2,Passengers,,,,Sci Fi,2016,yes,116,Makes_You_Think,no,no
+3,Dancer in the dark,,,,Tragedy,2000,no,134,"Sad, Singing",no,no
+4,9 11 the falling man,,,,Documentary,2006,yes,71,Grim,yes,no
+5,Horse girl,,,,Psychological Drama,2020,yes,103,"Sad, Makes_You_Think",no,no
+6,Legend,,,,Fantasy,1985,no,90,,no,no
+7,Bubble boy,,,,Comedy,,yes,,Odd,yes,no

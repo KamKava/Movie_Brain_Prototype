@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
+
+<title>Movie Brain</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+
+</head>
+
+
+<body>
+
+
+<h1>🎬 Movie Brain</h1>
+
+
+<div class="collection-count">
+
+    {{ total_movies }} movies in collection
+
+</div>
+
+<!-- ======================================================
+     ADD MOVIE
+======================================================= -->
+
+<div class="section">
+
+<details>
+
+<summary>
+➕ Add a new movie
+</summary>
+
+
+<form method="post"
+      action="/add_movie">
+
+
+    <label>Title</label>
+
+    <input type="text"
+           name="title"
+           required
+           style="width:100%;
+                  box-sizing:border-box;
+                  padding:11px;
+                  margin-top:5px;
+                  font-size:16px;
+                  border:1px solid #ccc;
+                  border-radius:8px;">
+
+
+    <label>Series</label>
+
+    <input type="text"
+           name="series"
+           placeholder="Leave blank for standalone movie"
+           style="width:100%;
+                  box-sizing:border-box;
+                  padding:11px;
+                  margin-top:5px;
+                  font-size:16px;
+                  border:1px solid #ccc;
+                  border-radius:8px;">
+
+
+    <label>Series order</label>
+
+    <input type="number"
+           step="1"
+           name="series_order"
+           placeholder="1, 2, 3..."
+           style="width:100%;
+                  box-sizing:border-box;
+                  padding:11px;
+                  margin-top:5px;
+                  font-size:16px;
+                  border:1px solid #ccc;
+                  border-radius:8px;">
+
+
+    <label>Genre</label>
+
+    <input type="text"
+        name="genre"
+        list="genre-options"
+        placeholder="e.g. Sci Fi"
+        style="width:100%;
+                box-sizing:border-box;
+                padding:11px;
+                margin-top:5px;
+                font-size:16px;
+                border:1px solid #ccc;
+                border-radius:8px;">
+
+    <datalist id="genre-options">
+
+        {% for value in genres %}
+
+        <option value="{{ value }}">
+
+        {% endfor %}
+
+    </datalist>
+
+    <label>Year</label>
+
+    <input type="number"
+           name="year"
+           placeholder="2026"
+           style="width:100%;
+                  box-sizing:border-box;
+                  padding:11px;
+                  margin-top:5px;
+                  font-size:16px;
+                  border:1px solid #ccc;
+                  border-radius:8px;">
+
+
+    <label>Runtime (minutes)</label>
+
+    <input type="number"
+           name="runtime"
+           placeholder="120"
+           style="width:100%;
+                  box-sizing:border-box;
+                  padding:11px;
+                  margin-top:5px;
+                  font-size:16px;
+                  border:1px solid #ccc;
+                  border-radius:8px;">
+
+
+    <label>Mood</label>
+
+    <input type="text"
+        name="mood"
+        list="mood-options"
+        placeholder="e.g. Grim"
+        style="width:100%;
+                box-sizing:border-box;
+                padding:11px;
+                margin-top:5px;
+                font-size:16px;
+                border:1px solid #ccc;
+                border-radius:8px;">
+
+    <datalist id="mood-options">
+
+        {% for value in moods %}
+
+        <option value="{{ value }}">
+
+        {% endfor %}
+
+    </datalist>
+
+    <label>Own it</label>
+
+    <select name="own_it">
+
+        <option value="no">
+            No
+        </option>
+
+        <option value="yes">
+            Yes
+        </option>
+
+    </select>
+
+
+    <label>Watched</label>
+
+    <select name="watched">
+
+        <option value="no">
+            No
+        </option>
+
+        <option value="yes">
+            Yes
+        </option>
+
+    </select>
+
+
+    <label>So bad it's good</label>
+
+    <select name="so_bad_its_good">
+
+        <option value="no">
+            No
+        </option>
+
+        <option value="yes">
+            Yes
+        </option>
+
+    </select>
+
+
+    <button type="submit">
+
+        ➕ ADD MOVIE
+
+    </button>
+
+
+</form>
+
+</details>
+
+</div>
+
+
+{% if message %}
+
+<div class="message">
+
+    {{ message }}
+
+</div>
+
+{% endif %}
+
+
+<!-- ======================================================
+     FILTERS
+======================================================= -->
+
+
+<div class="section">
+
+<details>
+
+<summary>
+🕵️ Movie filters
+</summary>
+
+
+<form method="get">
+
+
+    <label>Genre</label>
+
+    <select name="genre"
+            onchange="this.form.submit()">
+
+        <option value="">Any</option>
+
+        {% for value in genres %}
+
+        <option value="{{ value }}"
+            {% if filters.genre == value %}
+            selected
+            {% endif %}>
+
+            {{ value }}
+
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+
+    <label>Series</label>
+
+    <select name="series"
+            onchange="this.form.submit()">
+
+        <option value="">Any</option>
+
+        {% for value in series %}
+
+        <option value="{{ value }}"
+            {% if filters.series == value %}
+            selected
+            {% endif %}>
+
+            {{ value }}
+
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <label>Mood</label>
+
+    <select name="mood"
+            onchange="this.form.submit()">
+
+        <option value="">Any</option>
+
+        {% for value in moods %}
+
+        <option value="{{ value }}"
+            {% if filters.mood == value %}
+            selected
+            {% endif %}>
+
+            {{ value }}
+
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+
+    <label>Year</label>
+
+    <select name="year"
+            onchange="this.form.submit()">
+
+        <option value="">Any</option>
+
+        {% for value in years %}
+
+        <option value="{{ value }}"
+            {% if filters.year == value %}
+            selected
+            {% endif %}>
+
+            {{ value }}
+
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+
+    <label>Runtime</label>
+
+    <select name="runtime"
+            onchange="this.form.submit()">
+
+        <option value="">Any length</option>
+
+        <option value="quick"
+            {% if filters.runtime == "quick" %}
+            selected
+            {% endif %}>
+
+            ⚡ Quick watch — under 50 min
+
+        </option>
+
+        <option value="short"
+            {% if filters.runtime == "short" %}
+            selected
+            {% endif %}>
+
+            🎬 Short movie — under 90 min
+
+        </option>
+
+        <option value="long"
+            {% if filters.runtime == "long" %}
+            selected
+            {% endif %}>
+
+            🍿 Long movie — 90-120 min
+
+        </option>
+
+        <option value="mega"
+            {% if filters.runtime == "mega" %}
+            selected
+            {% endif %}>
+
+            🎞️ Mega movie — over 120 min
+
+        </option>
+
+    </select>
+
+
+    <label>Own it</label>
+
+    <select name="own_it"
+            onchange="this.form.submit()">
+
+        <option value="">Any</option>
+
+        <option value="yes"
+            {% if filters.own_it == "yes" %}
+            selected
+            {% endif %}>
+
+            Yes
+
+        </option>
+
+        <option value="no"
+            {% if filters.own_it == "no" %}
+            selected
+            {% endif %}>
+
+            No
+
+        </option>
+
+    </select>
+
+
+    <label>Watched</label>
+
+    <select name="watched"
+            onchange="this.form.submit()">
+
+        <option value="">Any</option>
+
+        <option value="yes"
+            {% if filters.watched == "yes" %}
+            selected
+            {% endif %}>
+
+            Yes
+
+        </option>
+
+        <option value="no"
+            {% if filters.watched == "no" %}
+            selected
+            {% endif %}>
+
+            No
+
+        </option>
+
+    </select>
+
+
+    <label>So bad it's good</label>
+
+    <select name="so_bad_its_good"
+            onchange="this.form.submit()">
+
+        <option value="">Any</option>
+
+        <option value="yes"
+            {% if filters.so_bad_its_good == "yes" %}
+            selected
+            {% endif %}>
+
+            Yes
+
+        </option>
+
+        <option value="no"
+            {% if filters.so_bad_its_good == "no" %}
+            selected
+            {% endif %}>
+
+            No
+
+        </option>
+
+    </select>
+
+
+</form>
+
+</details>
+
+</div>
+
+
+<!-- ======================================================
+     RESULT COUNT
+======================================================= -->
+
+
+<div class="result-count">
+
+    🎯 {{ available_count }} movies available
+
+</div>
+
+<!-- ======================================================
+     RANDOM PICK
+======================================================= -->
+
+
+{% if available_count > 0 %}
+
+<form method="get">
+
+    <input type="hidden"
+           name="genre"
+           value="{{ filters.genre }}">
+
+    <input type="hidden"
+           name="series"
+           value="{{ filters.series }}">
+
+    <input type="hidden"
+           name="mood"
+           value="{{ filters.mood }}">
+
+    <input type="hidden"
+           name="year"
+           value="{{ filters.year }}">
+
+    <input type="hidden"
+           name="runtime"
+           value="{{ filters.runtime }}">
+
+    <input type="hidden"
+           name="own_it"
+           value="{{ filters.own_it }}">
+
+    <input type="hidden"
+           name="watched"
+           value="{{ filters.watched }}">
+
+    <input type="hidden"
+           name="so_bad_its_good"
+           value="{{ filters.so_bad_its_good }}">
+
+    <input type="hidden"
+           name="pick"
+           value="1">
+
+
+    <button type="submit">
+
+        🎲 PICK RANDOM MOVIE
+
+    </button>
+
+</form>
+
+{% endif %}
+
+
+<!-- ======================================================
+     WINNER
+======================================================= -->
+
+
+{% if winner %}
+
+<div class="winner">
+
+    <div class="winner-label">
+
+        🎬 YOUR MOVIE
+
+    </div>
+
+
+    <div class="winner-title">
+
+        {{ winner.title }}
+
+    </div>
+
+
+    <div class="winner-info">
+
+        {{ winner.year }}
+
+        <br>
+
+        {{ winner.genre }}
+
+        {% if winner.director %}
+
+        <br>
+
+        🎬 {{ winner.director }}
+
+        {% endif %}
+
+        {% if winner.series %}
+
+        <br>
+
+        📚 {{ winner.series }}
+
+        {% endif %}
+
+        <br>
+
+        {{ winner.runtime }} minutes
+
+        <br>
+
+        Mood: {{ winner.mood }}
+
+    </div>
+
+
+    <!-- MARK WATCHED -->
+
+    <form method="post"
+          action="/watched">
+
+        <input type="hidden"
+               name="movie_id"
+               value="{{ winner.movie_id }}">
+
+
+        <input type="hidden"
+               name="genre"
+               value="{{ filters.genre }}">
+
+        <input type="hidden"
+               name="series"
+               value="{{ filters.series }}">
+
+        <input type="hidden"
+               name="mood"
+               value="{{ filters.mood }}">
+
+        <input type="hidden"
+               name="year"
+               value="{{ filters.year }}">
+
+        <input type="hidden"
+               name="runtime"
+               value="{{ filters.runtime }}">
+
+        <input type="hidden"
+               name="own_it"
+               value="{{ filters.own_it }}">
+
+        <input type="hidden"
+               name="watched"
+               value="{{ filters.watched }}">
+
+        <input type="hidden"
+               name="so_bad_its_good"
+               value="{{ filters.so_bad_its_good }}">
+
+
+        <button type="submit"
+                class="watch-button">
+
+            ✅ I JUST WATCHED THIS
+
+        </button>
+
+    </form>
+
+
+
+</div>
+
+{% endif %}
+
+<!-- ======================================================
+     MOVIE LIST
+======================================================= -->
+
+
+<div class="section">
+
+<details>
+
+<summary>
+
+📋 Show available movies
+({{ available_count }})
+
+</summary>
+
+
+{% for movie in available %}
+
+<div class="movie">
+
+    <div class="movie-title">
+
+        {{ movie.title }}
+
+    </div>
+
+
+    <div class="movie-info">
+
+        {{ movie.year }}
+        ·
+        {{ movie.genre }}
+
+        {% if movie.director %}
+
+        <br>
+
+        🎬 {{ movie.director }}
+
+        {% endif %}
+
+        {% if movie.series %}
+
+        <br>
+
+        📚 {{ movie.series }}
+
+        {% endif %}
+
+        <br>
+
+        {{ movie.runtime }} minutes
+        ·
+        {{ movie.mood }}
+
+    </div>
+    <a href="/update_movie/{{ movie.movie_id }}"
+   style="text-decoration:none;">
+
+    <button type="button"
+            class="secondary-button">
+
+        ✏️ UPDATE
+
+    </button>
+
+</a>
+
+</div>
+
+{% endfor %}
+
+
+</details>
+
+</div>
+
+
+
+<!-- ======================================================
+     DON'T OWN
+======================================================= -->
+
+
+<div class="section">
+
+<details>
+
+<summary>
+
+🛒 Movies I don't own
+({{ not_owned|length }})
+
+</summary>
+
+
+{% for movie in not_owned %}
+
+<div class="movie">
+
+    <div class="movie-title">
+
+        {{ movie.title }}
+
+    </div>
+
+
+    <div class="movie-info">
+
+        {{ movie.year }}
+        ·
+        {{ movie.genre }}
+
+        {% if movie.series %}
+
+        <br>
+
+        📚 {{ movie.series }}
+
+        {% endif %}
+
+        <br>
+
+        {{ movie.runtime }} minutes
+
+    </div>
+
+<a href="/update_movie/{{ movie.movie_id }}"
+   style="text-decoration:none;">
+
+    <button type="button"
+            class="secondary-button">
+
+        ✏️ UPDATE
+
+    </button>
+
+</a>
+
+</div>
+
+{% endfor %}
+
+
+</details>
+
+</div>
+
+<!-- ======================================================
+     WATCHED MOVIES
+======================================================= -->
+
+<div class="section">
+
+<details>
+
+<summary>
+👁️ Watched Movies ({{ watched_movies|length }})
+</summary>
+
+
+{% for movie in watched_movies %}
+
+<div class="movie">
+
+    <div class="movie-title">
+        {{ movie.title }}
+    </div>
+
+    <div class="movie-info">
+
+        {% if movie.director %}
+        🎬 {{ movie.director }}
+        <br>
+        {% endif %}
+
+        {{ movie.year }}
+        ·
+        {{ movie.genre }}
+
+        {% if movie.series %}
+        <br>
+        📚 {{ movie.series }}
+        {% endif %}
+
+        <br>
+        {{ movie.runtime }} minutes
+
+    </div>
+
+    <a href="/update_movie/{{ movie.movie_id }}"
+       style="text-decoration:none;">
+
+        <button type="button"
+                class="secondary-button">
+
+            ✏️ UPDATE
+
+        </button>
+
+    </a>
+
+</div>
+
+{% endfor %}
+
+</details>
+
+</div>
+
+<!-- ======================================================
+     Search
+======================================================= -->
+
+<div class="section">
+    <details {% if search %}open{% endif %}>
+    <summary>🔎 Search for a movie</summary>
+
+        <form method="get">
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                placeholder="Title, series or director..."
+            >
+
+            <button type="submit">SEARCH</button>
+        </form>
+
+        {% if search %}
+            <h3>Search results for "{{ search }}"</h3>
+
+            {% if search_results %}
+
+                {% for movie in search_results %}
+
+                <div class="movie">
+
+                    <div class="movie-title">
+
+                        {{ movie.title }}
+
+                    </div>
+
+
+                    <div class="movie-info">
+
+                        {% if movie.director %}
+
+                        🎬 {{ movie.director }}
+
+                        <br>
+
+                        {% endif %}
+
+
+                        {{ movie.year }}
+
+                        ·
+
+                        {{ movie.genre }}
+
+
+                        {% if movie.series %}
+
+                        <br>
+
+                        📚 {{ movie.series }}
+
+                        {% endif %}
+
+
+                        <br>
+
+                        {{ movie.runtime }} minutes
+
+                        ·
+
+                        {{ movie.mood }}
+
+
+                        <br>
+
+                        {% if movie.own_it == "yes" %}
+
+                        🏠 Own it
+
+                        {% else %}
+
+                        🛒 Don't own it
+
+                        {% endif %}
+
+
+                        ·
+
+
+                        {% if movie.watched == "yes" %}
+
+                        ✅ Watched
+
+                        {% else %}
+
+                        ⏳ Not watched
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <a href="/update_movie/{{ movie.movie_id }}"
+                    style="text-decoration:none;">
+
+                        <button type="button"
+                                class="secondary-button">
+
+                            ✏️ UPDATE
+
+                        </button>
+
+                    </a>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No movies found.</p>
+            {% endif %}
+        {% endif %}
+    </details>
+</div>
+
+<!-- ======================================================
+     RESET
+======================================================= -->
+
+
+<form method="get">
+
+    <button type="submit"
+            class="secondary-button">
+
+        🔄 RESET FILTERS
+
+    </button>
+
+</form>
+
+
+</body>
+
+</html>
