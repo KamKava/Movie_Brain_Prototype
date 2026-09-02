@@ -1,15 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 
-print("MOVIE BRAIN APP STARTED")
-
 import csv
 import os
 import random
 app = Flask(__name__)
-print("FLASK ROOT:", app.root_path)
-print("FLASK STATIC:", app.static_folder)
-print("STATIC EXISTS:", os.path.exists(app.static_folder))
-print("STATIC FILE EXISTS:", os.path.exists(os.path.join(app.static_folder, "style.css")))
 
 CSV_FILE = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
